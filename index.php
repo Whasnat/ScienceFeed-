@@ -16,4 +16,4 @@ $query  = mysqli_query($con, "INSERT INTO info VALUES('2', 'Raihan','w.hasnat@gm
 <body>
 	<h1>Hello to Science Feed</h1>
 </body>
-</html 
+</html>
