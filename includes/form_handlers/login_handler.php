@@ -14,6 +14,7 @@
 			$SESSION['username'] = $username;	//Store username in Session Variable
 
 			header("Location: index.php");
+			exit();
 		}
 	}
  ?>
