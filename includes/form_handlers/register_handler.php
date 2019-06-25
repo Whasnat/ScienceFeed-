@@ -139,8 +139,6 @@ $error_array = array();	//Error messages are stored in this Array
 		 	$_SESSION['reg_lname'] = "";
 		 	$_SESSION['reg_email'] = "";
 		 	$_SESSION['reg_email2'] = "";
-
 		}
-
 	}
 ?>
