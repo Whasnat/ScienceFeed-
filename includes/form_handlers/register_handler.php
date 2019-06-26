@@ -128,7 +128,7 @@ $error_array = array();	//Error messages are stored in this Array
 		 	}
 
 		 	//Insert the values into Database
-		 	$query = mysqli_query($con,"INSERT INTO user_information VALUES('','$fname','$lname','$username','$em','$password','$date','$profile_pic','0','0','yes',',')");
+		 	$query = mysqli_query($con,"INSERT INTO user_information VALUES('','$fname','$lname','$username','$em','$password','$date','$profile_pic','0','0','no',',')");
 
 		 	//Registration Success message
 		 	array_push($error_array, "<span style='color: #44bd32'>Congratulations! You're registration was Successful</span><br>"); 

@@ -1,5 +1,5 @@
 <?php 
-ob_start(); //Start Buffering
+session_start(); //Start Buffering
 $con = mysqli_connect("localhost", "root","","sciencefeed"); 	//connection variables
 $time = date_default_timezone_set("Asia/Dhaka");				
 if (mysqli_connect_errno()){
