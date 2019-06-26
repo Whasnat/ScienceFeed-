@@ -24,7 +24,7 @@
 			exit();
 		}else{
 			$SESSION['login_email'] = $email;  //Store email in session Variable
-			array_push($error_array,"Incorrect Email or Password <br>");
+			array_push($error_array,"<span style='color: #ff3838'>Incorrect Email or Password</span><br>");
 		}
 	}
  ?>

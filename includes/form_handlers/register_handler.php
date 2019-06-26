@@ -57,14 +57,14 @@ $error_array = array();	//Error messages are stored in this Array
 				//count the numbers of rows returned
 				$num_rows = mysqli_num_rows($em_check);
 				if ($num_rows > 0) {
-					 array_push($error_array, "Email already in use<br>");
+					 array_push($error_array, "<span style='color: #ff3838'>Email already in use</span><br>");
 				}
 
 			}else{
-				array_push($error_array,"Invalid Email Address<br>");
+				array_push($error_array,"<span style='color: #ff3838'>Invalid Email Address</span><br>");
 			}
 		}else{
-			array_push($error_array, "Emails Don't match<br>");
+			array_push($error_array, "<span style='color: #ff3838'>Emails Don't match</span><br>");
 		}
  		/*---------------------------------------------------------------------------------------------------------------*/
 
@@ -73,15 +73,15 @@ $error_array = array();	//Error messages are stored in this Array
 		* This Block Validates the Password * 
 		*************************************/
 		if ($password != $password2) {
-			array_push($error_array, "Passwords do not match<br>");
+			array_push($error_array, "<span style='color: #ff3838'>Passwords do not match</span><br>");
 		}else{
 			//Checks if the Password caontain any Invalid charachters
 			if (preg_match('/[^A-Za-z0-9]/', $password)) {
-			 	array_push($error_array,"Password can only contain numbers & letters<br>");
+			 	array_push($error_array,"<span style='color: #ff3838'>Password can only contain numbers & letters</span><br>");
 			}
 		}
 		 if (strlen($password)>30 || strlen($password)<5) {
-		 	array_push($error_array, "Your password should be between 5 to 30 charachters<br>");
+		 	array_push($error_array, "<span style='color: #ff3838'>Your password should be between 5 to 30 charachters</span><br>");
 		 }
 		/*---------------------------------------------------------------------------------------------------------------*/
 
@@ -89,9 +89,9 @@ $error_array = array();	//Error messages are stored in this Array
 		* This Block Validates the User names * 
 		***************************************/
 		if (strlen($fname) >30 || strlen($fname) <2) {
-			array_push($error_array, "Your First name must be between 2 to 30 charachters<br>");
+			array_push($error_array, "<span style='color: #ff3838'>Your First name must be between 2 to 30 charachters</span><br>");
 		}elseif (strlen($lname) >30 || strlen($lname) <2) {
-			array_push($error_array, "Your Last name must be between 2 to 30 charachters<br>");
+			array_push($error_array, "<span style='color: #ff3838'>Your Last name must be between 2 to 30 charachters</span><br>");
 		}
 		/*---------------------------------------------------------------------------------------------------------------*/
 
