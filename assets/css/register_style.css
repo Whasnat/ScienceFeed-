@@ -94,7 +94,7 @@ input[type="text"],input[type="email"],input[type="password"]{
 input[type="text"]:hover,input[type="email"]:hover,input[type="password"]:hover{
 	border: 2px solid rgba(68, 189, 50,1.0);
 	cursor: pointer;
-} 
+}
 
 input[type="text"]:focus::-webkit-input-placeholder,input[type="email"]:focus::-webkit-input-placeholder,input[type="password"]:focus::-webkit-input-placeholder{
 	color: transparent;

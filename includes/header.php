@@ -4,10 +4,12 @@ require 'includes/form_handlers/login_handler.php';
 
 if (isset($_SESSION['username'])){
 	$user_logged_in = $_SESSION['username'];
+	$user_detail_query = mysqli_query($con,"SELECT * FROM user_information WHERE username = '$user_logged_in '");
+	$user = mysqli_fetch_array($user_detail_query);
 }
 else{
 	header("Location: register.php");
-}	
+}
 ?>
 
 <html>
@@ -32,7 +34,7 @@ else{
 			<a href="index.php"><strong>Science Feed</strong></a>
 		</div>
 
-		<nav>
+		<nav >
 			<a href="index.php">
 				<i class="fas fa-home"></i>
 			</a>
@@ -43,10 +45,13 @@ else{
 				<i class="fas fa-bell"></i>
 			</a>
 			<a href="#">
+				<i class="fas fa-comment-alt"></i>
+			</a>
+			<a href="#">
 				<i class="fas fa-cog"></i>
 			</a>
 			<a href="#">
-				<i class="fas fa-comment-alt"></i>
+				<i  id= "logout" class="fas fa-sign-out-alt"></i>
 			</a>
 
 		</nav>

@@ -33,11 +33,15 @@ body{
 	display: inline-flex;
 }
 
+.logo{
+	margin-top: 5px;
+}
 .logo a{
 	font-family: "Tr2n", sans-serif;
 	font-size: 30px;
 	text-decoration: none;
 	color: #e74c3c;
+	margin-top: 5px;
 }
 
 .logo a:hover{
@@ -62,5 +66,8 @@ nav a{
 nav a:hover{
 
 	color: #e67e22;
+}
 
+#logout:hover{
+	color: #EA2027;
 }
