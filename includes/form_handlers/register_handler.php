@@ -122,9 +122,9 @@ $error_array = array();	//Error messages are stored in this Array
 		 	//Assign a default profile Photo to user
 		 	$rand = rand(1,2);
 		 	if($rand ==1){
-		 		$profile_pic = "assets/images/profile_pics//default/d_1.jpg";
+		 		$profile_pic = "assets/images/profile_pics//default/d_1.png";
 		 	}elseif ($rand ==2) {
-		 		$profile_pic = "assets/images/profile_pics/default/d_2.jpg";
+		 		$profile_pic = "assets/images/profile_pics/default/d_2.png";
 		 	}
 
 		 	//Insert the values into Database

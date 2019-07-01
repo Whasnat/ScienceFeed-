@@ -30,10 +30,12 @@ else{
 <body>
 
 	<div class="top_bar">
+		<!--Logo-->
 		<div class="logo">
 			<a href="index.php"><strong>Science Feed</strong></a>
 		</div>
 
+		<!--Nevigation-->
 		<nav >
 			<a href="index.php">
 				<i class="fas fa-home"></i>
@@ -53,7 +55,9 @@ else{
 			<a href="#">
 				<i  id= "logout" class="fas fa-sign-out-alt"></i>
 			</a>
-
-		</nav>
+		</nav>	
 	</div>
+
+	
+	<div class="wrapper">			<!--Index Wrapper-->
 
