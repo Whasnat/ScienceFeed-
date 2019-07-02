@@ -18,12 +18,11 @@ else{
 	<!--Javascript-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="assets/js/boorstrap.js"></script>
+	<script src="https://kit.fontawesome.com/f44ce8d2ea.js"></script>
 	
 	<!--CSS-->
 	<link rel="stylesheet" type="text/css" href="assets/css/boorstrap.css">
-	<script src="https://kit.fontawesome.com/f44ce8d2ea.js"></script>
-
-	<!--<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/3.6.0/css/font-awesome.css" >-->
+	
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	
 </head>
@@ -57,7 +56,6 @@ else{
 			</a>
 		</nav>	
 	</div>
-
 	
 	<div class="wrapper">			<!--Index Wrapper-->
 
