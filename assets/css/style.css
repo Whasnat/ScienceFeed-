@@ -124,16 +124,16 @@ nav a:hover{
 	border-radius: 5px;
 }
 
-.newsfeed_column{
+.post_column{
 	/*margin-left: 280px;
 	text-align: center;
 	padding: 0px;*/
 	float: right;
 	width: 78%;
 	z-index: -1;
-	min-height: 150px;
+	min-height: 100px;
 	text-align: center;
-	padding-top: 30px;
+	padding-top: 10px;
 }
 .status_section{
 	height: 50px;
@@ -197,5 +197,13 @@ textarea:focus{
 	background-color: #27ae60;
 }
 
+.status_view{
+	margin-top: 10px;
+	float: right;
+	width: 78%;
+	z-index: -1;
+	min-height: 100px;
+	padding-top: 10px;
 
+}
 

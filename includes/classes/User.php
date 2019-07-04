@@ -29,6 +29,18 @@
 		
 		}
 
+		public function isClosed(){
+			$username = $this->user['username'];
+			$query = mysqli_query($this->con, "SELECT user_active FROM user_information WHERE username = '$username'");
+			$row = mysqli_fetch_array($query);
+
+			if ($row['user_active'] == 'no') 	//if closed
+				return true; 
+			
+			else 
+				return false;
+			
+		}
 
 	}
  ?>

@@ -24,8 +24,7 @@
 	 	
 
 	 	<!--The Main Newsfeed Column-->
-	 	<div class="newsfeed_column column">
-
+	 	<div class="post_column column">
 	 		<!--Status update Section-->
 	 		<form class="status_section" action="index.php" method="POST">
 		 		<img src="<?php echo $user['profile_photo']?>">
@@ -34,13 +33,18 @@
 		 	</form>
 		 	<br>
 
-		 	<?php 
-	 			$user_obj = new User($con, $user_logged_in);
-	 			echo $user_obj->getName();  
-		 	?> 
 
 	 	</div>
 		<!--=====================================================================================================-->
+
+		<!--Status View Column-->
+		<div class="status_view column">
+			<?php 
+	 			  $post = new Posts($con, $user_logged_in);
+	 			  $post->loadPostsHome();
+		 	?> 
+
+		</div>
 
 
 	</div>		<!--end of wrapper-->
