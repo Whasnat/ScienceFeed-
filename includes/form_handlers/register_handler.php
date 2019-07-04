@@ -104,7 +104,7 @@ $error_array = array();	//Error messages are stored in this Array
 		 	$password = md5($password);		//Encrypt password into md5 
 
 		 	//Genetrate a Username by joining/contatening First and last name
-		 	$username = strtolower($fname . "." . $lname);
+		 	$username = strtolower($fname . "_" . $lname);
 
 		 	//check DB for maching usernames
 		 	$check_username_query = mysqli_query($con, "SELECT username FROM user_information WHERE username = '$username'");

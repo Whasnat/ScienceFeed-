@@ -10,6 +10,7 @@ if (isset($_SESSION['username'])){
 else{
 	header("Location: register.php");
 }
+
 ?>
 
 <html>
@@ -39,7 +40,7 @@ else{
 			<a href="index.php">
 				<i class="fas fa-home"></i>
 			</a>
-			<a href="#">
+			<a href="<?php echo $user_logged_in;?>">
 				<i class="fas fa-user-astronaut"></i>
 			</a>
 			<a href="#">

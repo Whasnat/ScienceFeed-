@@ -125,9 +125,15 @@ nav a:hover{
 }
 
 .newsfeed_column{
-	margin-left: 280px;
+	/*margin-left: 280px;
 	text-align: center;
-	padding: 0px;
+	padding: 0px;*/
+	float: right;
+	width: 78%;
+	z-index: -1;
+	min-height: 150px;
+	text-align: center;
+	padding-top: 30px;
 }
 .status_section{
 	height: 50px;
@@ -141,41 +147,55 @@ nav a:hover{
 
 .status_section img{
 	padding-top: 5px;
-	height: 90%;
+	height: 113%;
 	margin-bottom: 0px;
 }
 
-.status_section input[type="text"]{
-		padding: 0px 3px 0px 5px; 
-		margin: 10px;
-		height: 35px;
-		width: 85%;
-		background:	none;
-		border: 2px solid #0D47A1;
-		border-radius: 5px;
+.status_section textarea{
+	padding: 3px 3px 0px 5px;
+    margin: 10px;
+    height: 50px;
+    width: 85%;
+    background: none;
+    border: 2px solid #0D47A1;
+    box-shadow: 0.5px 0.5px 0.5px #000000;
+    border-radius: 5px;
+    font-size: 12px;
+    font-family: sans-serif;
 }
 
-.status_section input[type="text"]:hover{
+.status_section textarea:hover{
 		background-color: #E3F2FD;
 		border: 2px solid #27ae60;	
 }
 
+textarea:focus{
+	outline: 0;
+}
+
+
 .status_section input[type="submit"]{
 	position: relative;
-	height: 68%;
+	height: 98%;
 	width:  70px;
 	margin-top: 10px;
 	border: 1px solid #000000;
 	box-shadow: 1px 1px 1px #34495e;
-	background-color:#ecf0f1;
-	border-radius: 5px;
-}
+	background-color:#43afff;
+	border-radius: 3px;
+	font-family: lunasol-sequence, sans-serif;
+	padding: 1px;
 
+}
 
 .status_section input[type="submit"]:hover{
-	background-color: #42A5F5;
+	background-color: #ecf0f1;
 }
 
+.status_section input[type="submit"]:active{
+	padding: 5px 4px 4px 6px;
+	background-color: #27ae60;
+}
 
 
 
