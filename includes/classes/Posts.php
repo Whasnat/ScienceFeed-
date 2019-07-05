@@ -144,25 +144,34 @@
 				}
 
 
-				//Display Post 
-				$str .= "<div class = 'status_post'>
-								<div class='post_pro_photo'>
+				//Display Post  **NOTE: "&nbsp" is used for none line_break spaces.**
+				$str .= "<div class = 'status_post'  >
+
+								<div class='post_pro_photo' style = 'color: #636e72; text-shadow: 0.5px 0.5px 0.5px #2d3436;' >
 									<img src = '$profile_photo' height = '50'>
+									
+								</div >
+									
+								<div class = 'posted_by'>
+									<a href='$added_by'> $first_name $last_name </a> $added_to &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$time_msg
+
 								</div>
 
-								<div class = 'posted_by' style = 'color: #636e72;' text-shadow: '0.5px 0.5px 0.5px' #2d3436;'>
-								 	<a href='$added_by'> $first_name $last_name </a> $added_to &nbsp;&nbsp;&nbsp;&nbsp;$time_msg
-								</div>
-
-								<div id = 'post_body'>
+								<div id='post_body' style = 'color: #000000;' font: 'sans-serif;' font-size: '14;' >
+									<br>
 								 	$body
 								 	<br>	
 								</div>
-
-							</div>";
+							</div>
+							<hr>";
 			}
 
-			echo $str;
+			if ($str == "") {
+				echo "No Posts to show";
+			}else{
+				echo $str;	
+			}
+					//return the String 
 		}
 	}
 ?>

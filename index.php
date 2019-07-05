@@ -39,14 +39,37 @@
 
 		<!--Status View Column-->
 		<div class="status_view column">
-			<?php 
-	 			  $post = new Posts($con, $user_logged_in);
-	 			  $post->loadPostsHome();
-		 	?> 
+			<div class="posts">
+		 		<div class="posts_area"></div>
+		 		<img id="loading"	src="assets/images/icons/loading.gif">
+			</div>
 
 		</div>
 
+	<script>
+		var user_logged_in = '<?php echo $user_logged_in; ?>';
 
+		$(document).ready(function(){
+			$('#loading').show;	//show loading icon
+
+			$.ajax({
+				url: "includes/handlers/ajax_load_posts.php",
+				type: "POST",
+				data: "page=1&user_logged_in=" + user_logged_in,
+				cache: false, 	
+
+				success: function(data){
+					$('#loading').hide;
+					$('.posts_area').html(data); 
+				} 
+			});
+
+			$(window).scroll(function(){
+				
+			});
+		});
+
+	</script>
 	</div>		<!--end of wrapper-->
 </body>
 </html> 
