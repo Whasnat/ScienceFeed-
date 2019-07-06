@@ -28,6 +28,12 @@
 			return $row['first_name']." " .$row['last_name'];
 		
 		}
+		public function getProfilePhoto(){
+			$username = $this->user['username'];
+			$query = mysqli_query($this->con, "SELECT profile_photo From user_information WHERE username = '$username'");
+			$row = mysqli_fetch_array($query); 
+			return $row['profile_photo'];
+		}
 
 		public function isClosed(){
 			$username = $this->user['username'];

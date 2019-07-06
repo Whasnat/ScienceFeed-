@@ -1,51 +1,65 @@
 <?php 
-	class Posts {
-		private $user_obj, $con;
-		
-		public function __construct($con, $user){
-			$this->con = $con;
-			$this->user_obj = new User($con,$user);
-		}
+class Posts{
+	private $user_obj, $con;
+	
+	public function __construct($con, $user){
+		$this->con = $con;
+		$this->user_obj = new User($con,$user);
+	}
 
-		public function submitPost($body, $added_to){
+	public function submitPost($body, $added_to){
 
-			$body = strip_tags($body);
-			$body = mysqli_real_escape_string($this->con, $body);
-			$check_empty = preg_replace('/\s+/', "", $body);
+		$body = strip_tags($body);
+		$body = mysqli_real_escape_string($this->con, $body);
+		$check_empty = preg_replace('/\s+/', "", $body);
 
-			if ($check_empty != "") {
-				//Get the Date and Time of post
-				$date_added = date("Y-m-d H:i:s");
+		if ($check_empty != "") {
+			//Get the Date and Time of post
+			$date_added = date("Y-m-d H:i:s");
 
-				//Get Username
-				$added_by = $this->user_obj->getUsername();	
+			//Get Username
+			$added_by = $this->user_obj->getUsername();	
 
-				if ($added_by == $added_to) {
-						$added_to = "none";
-				}
+			if ($added_by == $added_to) {
+				$added_to = "none";
+			}
 
-				$query = mysqli_query($this->con, "INSERT INTO posts VALUES ('', '$body','$added_by','$added_to','$date_added','no','no','0')");
-				$return_id = mysqli_insert_id($this->con);
+			$query = mysqli_query($this->con, "INSERT INTO posts VALUES ('', '$body','$added_by','$added_to','$date_added','no','no','0')");
+			$return_id = mysqli_insert_id($this->con);
 
-				//Update Posts
-				$num_post = $this->user_obj->getNumPost();
-				$num_post++;
-				$update_query = mysqli_query($this->con, "UPDATE user_information SET num_posts = '$num_post' WHERE username = '$added_by'");
+			//Update Posts
+			$num_post = $this->user_obj->getNumPost();
+			$num_post++;
+			$update_query = mysqli_query($this->con, "UPDATE user_information SET num_posts = '$num_post' WHERE username = '$added_by'");
 
-			}		
-		}
+	 	}
+	}
 
 
-		public function loadPostsHome(){
-			$str = ""; //String to return
-			$data = mysqli_query($this->con, "SELECT * FROM posts WHERE deleted = 'no' ORDER BY id DESC");
+	public function loadPostsHome($data, $limit){
 
-			while($row = mysqli_fetch_array($data)){
+		$page = $data['page'];
+		$user_logged_in = $this->user_obj->getUsername();
+
+		if ($page == 1)
+			$start = 0;
+		else
+			$start = ($page - 1) * $limit;
+
+		$str = ""; //String to return
+		$data_query = mysqli_query($this->con, "SELECT * FROM posts WHERE deleted = 'no' ORDER BY id DESC");
+
+
+		if (mysqli_num_rows($data_query)> 0){
+
+			$num_iteration = 0;
+			$count_post_loaded = 1;
+			while ($row = mysqli_fetch_array($data_query)){
 				$id = $row['id'];
-				$body = $row['body'];
+				$body = $row['body']; 
 				$added_by = $row['added_by'];
 				$date_time_added = $row['date_added'];
-
+		
 				//Include User if added From home
 				if ($row['added_to'] == "none") {
 					$added_to = "";
@@ -61,22 +75,56 @@
 					continue;		//if closed continue from "while"
 				}
 
+				//if the number iteration is lower than Start
+				if ($num_iteration++ < $start)
+					continue;
+
+				//If 10 posts are loaded then Break out of loop
+				if ($count_post_loaded > $limit){
+					break;
+				}
+				else{
+					$count_post_loaded++; 
+				}
+
 				//Get User Information 
 				$user_detail_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_photo FROM user_information WHERE username = '$added_by'");
 				$user_row = mysqli_fetch_array($user_detail_query);
 				$first_name =	$user_row['first_name'];
 				$last_name 	= 	$user_row['last_name'];
 				$profile_photo =	$user_row['profile_photo'];
+				
+				?>
 
 
 
+				<!--if comment is clicked change view-->
+				<script>
+					function toggle<?php echo $id;?>(){
+						var target = $(event.target);
+						if (!target.is("a")){
+
+							var element = document.getElementById("toggleComment<?php echo $id;?>");
+							if (element.style.display == "block")
+								element.style.display = "none";
+							else
+								element.style.display = "block";
+						}
+						
+					}
+				</script>
+
+				
+
+
+				<?php
 				//TimeFrame
 				$date_time_current = date("Y-m-d H:i:s");
 				$start_date_time = new DateTime($date_time_added);		//Time Posted
 				$end_date_time = new DateTime($date_time_current);			//Current Time
 				$interval = $start_date_time->diff($end_date_time);			//Interval between the 2 times
 
-
+				
 				//Year Old
 				if ($interval-> y >= 1) {
 					if ($interval-> y == 1) 
@@ -84,8 +132,7 @@
 					else
 						$time_msg = $interval->y. " years ago"; 
 				}
-
-
+				
 				//month Old
 				elseif ($interval-> m >=1) {
 
@@ -103,22 +150,21 @@
 						$time_msg = $interval-> m . " months" . $days;
 					}
 				}
-
+				
 				//Day Old
 				elseif ($interval-> d >=1) {
-					if ($interval-> d == 1) {
+					if ($interval-> d == 1)
 						$time_msg = $interval-> d. " day ago";
-					}else{
+					else
 						$time_msg = $interval-> d." days ago";
-					}
+					
 				}
-
-				//Hour Old
+				//Hour Old 
 				elseif ($interval-> h >=1) {
 					if ($interval-> h == 1) {
 						$time_msg = $interval-> h. " hour ago";
 					}else{
-						$time_msg = $interval-> h. " hours ago";
+						$time_msg = $interval-> h." hours ago";
 					}
 				}
 
@@ -140,39 +186,40 @@
 						$time_msg = $interval-> s. " day ago";
 					}else{
 						$time_msg = $interval-> s." days ago";
-					}
+					}						
 				}
-
-
-				//Display Post  **NOTE: "&nbsp" is used for none line_break spaces.**
-				$str .= "<div class = 'status_post'  >
-
-								<div class='post_pro_photo' style = 'color: #636e72; text-shadow: 0.5px 0.5px 0.5px #2d3436;' >
-									<img src = '$profile_photo' height = '50'>
-									
-								</div >
-									
-								<div class = 'posted_by'>
-									<a href='$added_by'> $first_name $last_name </a> $added_to &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$time_msg
-
-								</div>
-
-								<div id='post_body' style = 'color: #000000;' font: 'sans-serif;' font-size: '14;' >
-									<br>
-								 	$body
-								 	<br>	
-								</div>
+				$str .="<div class='status_post' onClick='javascript:toggle$id()'>
+							<div class='post_pro_photo'>
+								<img src = '$profile_photo' height = '50'>
 							</div>
-							<hr>";
+
+							<div class = 'posted_by'>
+								<a href='$added_by'> $first_name $last_name </a> $added_to &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$time_msg
+							</div>
+
+							<div id='post_body'>
+								<br>
+							 	$body
+							 	<br>
+							</div>
+
+							<div class='post_comment' id = 'toggleComment$id' style = 'display: none;'>
+							<iframe src = 'comment_section.php?post_id=$id' id = 'commnet_iframe'></iframe>
+							</div>
+
+						</div>
+						<hr>";			
 			}
 
-			if ($str == "") {
-				echo "No Posts to show";
-			}else{
-				echo $str;	
-			}
-					//return the String 
+			if($count_post_loaded > $limit) 
+				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
+							<input type='hidden' class='no_morePosts' value='false'>";
+			else 
+				$str .= "<input type='hidden' class='no_morePosts' value='true'><p style='text-align: centre;'> No more posts to show! </p>";
+			
 		}
-	}
-?>
 
+		echo $str;
+	}
+}
+?>

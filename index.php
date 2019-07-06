@@ -3,6 +3,7 @@
 	include("includes/classes/User.php");
 	include("includes/classes/Posts.php");
 
+	//See If user still Logged In
 	if (isset($_POST['update_status'])) {
 		$post = new Posts($con, $user_logged_in);
 		$post-> submitPost($_POST['post_text'], "none");
@@ -23,7 +24,7 @@
 		<!--======================================================================================================-->
 	 	
 
-	 	<!--The Main Newsfeed Column-->
+	 	<!--The status Column-->
 	 	<div class="post_column column">
 	 		<!--Status update Section-->
 	 		<form class="status_section" action="index.php" method="POST">
@@ -37,13 +38,10 @@
 	 	</div>
 		<!--=====================================================================================================-->
 
-		<!--Status View Column-->
+		<!--Status feed Column-->
 		<div class="status_view column">
-			<div class="posts">
-		 		<div class="posts_area"></div>
-		 		<img id="loading"	src="assets/images/icons/loading.gif">
-			</div>
-
+			<div class="posts"></div>
+			<img id="loading"	src="assets/images/icons/loading.gif">
 		</div>
 
 	<script>
@@ -52,21 +50,57 @@
 		$(document).ready(function(){
 			$('#loading').show;	//show loading icon
 
+
+			//Loads the First posts in the resting Window
 			$.ajax({
-				url: "includes/handlers/ajax_load_posts.php",
+				url: "includes/handlers/ajax_load_posts.php",		//Sends Request to show posts
 				type: "POST",
-				data: "page=1&user_logged_in=" + user_logged_in,
+				data: "page=1&user_logged_in=" + user_logged_in,	
 				cache: false, 	
 
-				success: function(data){
-					$('#loading').hide;
-					$('.posts_area').html(data); 
+				success: function(data){			
+					$('#loading').hide;			//if succeed hide the loading icon
+					$('.posts').html(data); 	//show Posts
 				} 
 			});
+			//***************************************************//
 
-			$(window).scroll(function(){
+
+
+			$(window).scroll(function() {
+				var height = $('.posts').height();		//Div Containing posts
+				var scroll_top = $(this).scrollTop(); 
+				var page = $('.posts').find('.nextPage').val();
+				var no_morePosts = $('.posts').find('.no_morePosts').val();
 				
-			});
+
+				//If posts run out in a page load more posts
+				if ((document.body.scrollHeight == document.body.scrollTop + window.innerHeight) && no_morePosts == 'false') {	
+
+					$('#loading').show();		//Show the Loading icon 
+
+
+					var ajaxReq = $.ajax({					//repeat the process in requesting Posts
+
+						url: "includes/handlers/ajax_load_posts.php",
+						type: "POST",
+						data: "page=" + page + "&user_logged_in=" + user_logged_in,
+						cache: false,
+
+						success: function(response){
+							$('.posts').find('.nextPage').remove();
+							$('.posts').find('.no_morePosts').remove();
+ 	
+							$('#loading').hide();
+							$('.posts').append(response);
+						}
+					});
+				} //End If
+
+				return false;
+
+			}); // End of (window).scroll(function() 
+
 		});
 
 	</script>
