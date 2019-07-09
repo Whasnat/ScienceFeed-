@@ -250,4 +250,7 @@ textarea:focus{
 
 }
 
-.comment
+
+.post_comment iframe{
+	border: none;
+}

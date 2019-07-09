@@ -40,7 +40,6 @@ class Posts{
 
 		$page = $data['page'];
 		$user_logged_in = $this->user_obj->getUsername();
-
 		if ($page == 1)
 			$start = 0;
 		else
@@ -59,12 +58,12 @@ class Posts{
 				$body = $row['body']; 
 				$added_by = $row['added_by'];
 				$date_time_added = $row['date_added'];
-		
+				
 				//Include User if added From home
 				if ($row['added_to'] == "none") {
 					$added_to = "";
 				}else{
-					$added_obj = new User($con, $row['added_to']);
+					$added_to_obj = new User($this->con, $row['added_to']);
 					$added_to_name = $added_to_obj->getName();
 					$added_to = "to <a href='". $row['added_to']. "'>". $added_to_name ."</a>";
 				}
@@ -85,6 +84,16 @@ class Posts{
 				}
 				else{
 					$count_post_loaded++; 
+				}
+
+
+				//If the user is the the same show delete button
+				if ($user_logged_in == $added_by) {
+					echo $added_by;
+					$delete_button = "<button class='delete_button btn-danger' id='button_post$id'>x</button>";
+				}else{
+
+					$delete_button = "";
 				}
 
 				//Get User Information 
@@ -194,7 +203,7 @@ class Posts{
 							</div>
 
 							<div class = 'posted_by'>
-								<a href='$added_by'> $first_name $last_name </a> $added_to &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$time_msg
+								<a href='$added_by'> $first_name $last_name </a> $added_to &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$time_msg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$delete_button
 							</div>
 
 							<div id='post_body'>
@@ -208,9 +217,50 @@ class Posts{
 							</div>
 
 						</div>
-						<hr>";			
-			}
+						<hr>";		
 
+
+			?>
+
+
+
+			<!--Gets the DELETE Button ID and passes the Post ID to delete_post.php-->
+			<script>
+				$(document).ready(function(){
+					$('#button_post<?php echo$id;?>').on('click',function(){
+						bootbox.confirm({
+						    message: "This is a confirm with custom button text and color! Do you like it?",
+						    buttons: {
+						        confirm: {
+						            label: 'DELETE',
+						            className: 'btn-success'
+						        },
+						        cancel: {
+						            label: 'GO BACK',
+						            className: 'btn-danger'
+						        }
+						    },
+						    callback: function (result) {
+						        $.post("includes/form_handlers/delete_post.php?post_id=<?php echo$id; ?>", {result:result});
+						        	
+						        if(result)
+										location.reload();
+
+						    }
+						});	
+
+					});
+				});
+			</script>
+
+
+
+
+			<?php
+
+			
+			}
+			
 			if($count_post_loaded > $limit) 
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
 							<input type='hidden' class='no_morePosts' value='false'>";
@@ -218,7 +268,6 @@ class Posts{
 				$str .= "<input type='hidden' class='no_morePosts' value='true'><p style='text-align: centre;'> No more posts to show! </p>";
 			
 		}
-
 		echo $str;
 	}
 }

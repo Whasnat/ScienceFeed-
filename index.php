@@ -24,7 +24,7 @@
 		<!--======================================================================================================-->
 	 	
 
-	 	<!--The status Column-->
+	 	<!--The status_update Column-->
 	 	<div class="post_column column">
 	 		<!--Status update Section-->
 	 		<form class="status_section" action="index.php" method="POST">
@@ -40,7 +40,7 @@
 
 		<!--Status feed Column-->
 		<div class="status_view column">
-			<div class="posts"></div>
+			<div class="posts_section"></div>
 			<img id="loading"	src="assets/images/icons/loading.gif">
 		</div>
 
@@ -48,19 +48,18 @@
 		var user_logged_in = '<?php echo $user_logged_in; ?>';
 
 		$(document).ready(function(){
-			$('#loading').show;	//show loading icon
-
+			$('#loading').show();//show loading icon
 
 			//Loads the First posts in the resting Window
 			$.ajax({
-				url: "includes/handlers/ajax_load_posts.php",		//Sends Request to show posts
+				url: "includes/handlers/ajax_load_posts.php",	//Sends Request to show posts
 				type: "POST",
 				data: "page=1&user_logged_in=" + user_logged_in,	
 				cache: false, 	
 
 				success: function(data){			
 					$('#loading').hide;			//if succeed hide the loading icon
-					$('.posts').html(data); 	//show Posts
+					$('.posts_section').html(data); 	//show Posts
 				} 
 			});
 			//***************************************************//
@@ -68,14 +67,14 @@
 
 
 			$(window).scroll(function() {
-				var height = $('.posts').height();		//Div Containing posts
+				var height = $('.posts_section').height();		//Div Containing posts
 				var scroll_top = $(this).scrollTop(); 
-				var page = $('.posts').find('.nextPage').val();
-				var no_morePosts = $('.posts').find('.no_morePosts').val();
+				var page = $('.posts_section').find('.nextPage').val();
+				var no_morePosts = $('.posts_section').find('.no_morePosts').val();
 				
 
 				//If posts run out in a page load more posts
-				if ((document.body.scrollHeight == document.body.scrollTop + window.innerHeight) && no_morePosts == 'false') {	
+				if ((document.body.scrollHeight == document.body.scroll_top + window.innerHeight) && no_morePosts == 'false') {	
 
 					$('#loading').show();		//Show the Loading icon 
 
@@ -88,11 +87,11 @@
 						cache: false,
 
 						success: function(response){
-							$('.posts').find('.nextPage').remove();
-							$('.posts').find('.no_morePosts').remove();
+							$('.posts_section').find('.nextPage').remove();
+							$('.posts_section').find('.no_morePosts').remove();
  	
 							$('#loading').hide();
-							$('.posts').append(response);
+							$('.posts_section').append(response);
 						}
 					});
 				} //End If

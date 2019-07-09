@@ -20,7 +20,6 @@
 			return $row['num_posts'];
 		}
 
-
 		public function getName(){
 			$username = $this->user['username'];
 			$query = mysqli_query($this->con, "SELECT first_name, last_name From user_information WHERE username = '$username'");
@@ -40,11 +39,15 @@
 			$query = mysqli_query($this->con, "SELECT user_active FROM user_information WHERE username = '$username'");
 			$row = mysqli_fetch_array($query);
 
-			if ($row['user_active'] == 'no') 	//if closed
+			if ($row['user_active'] == 'no'){			//if closed
 				return true; 
-			
-			else 
+			}else {	
 				return false;
+			}
+			
+		}
+
+		public function isFriend(){
 			
 		}
 
