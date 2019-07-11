@@ -74,151 +74,153 @@ class Posts{
 					continue;		//if closed continue from "while"
 				}
 
-				//if the number iteration is lower than Start
-				if ($num_iteration++ < $start)
-					continue;
+				//check If user is in friend arrray. only load posts from friends
+				$user_logged_obj = new User ($this->con, $user_logged_in);
+				if ($user_logged_obj->isFriend($added_by)) {
+					
+					//if the number iteration is lower than Start
+					if ($num_iteration++ < $start)
+						continue;
 
-				//If 10 posts are loaded then Break out of loop
-				if ($count_post_loaded > $limit){
-					break;
-				}
-				else{
-					$count_post_loaded++; 
-				}
-
-
-				//If the user is the the same show delete button
-				if ($user_logged_in == $added_by) {
-					echo $added_by;
-					$delete_button = "<button class='delete_button btn-danger' id='button_post$id'>x</button>";
-				}else{
-
-					$delete_button = "";
-				}
-
-				//Get User Information 
-				$user_detail_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_photo FROM user_information WHERE username = '$added_by'");
-				$user_row = mysqli_fetch_array($user_detail_query);
-				$first_name =	$user_row['first_name'];
-				$last_name 	= 	$user_row['last_name'];
-				$profile_photo =	$user_row['profile_photo'];
-				
-				?>
+					//If 10 posts are loaded then Break out of loop
+					if ($count_post_loaded > $limit){
+						break;
+					}
+					else{
+						$count_post_loaded++; 
+					}
 
 
+					//If the user is the the same show delete button
+					if ($user_logged_in == $added_by) {
+						echo $added_by;
+						$delete_button = "<button class='delete_button btn-danger' id='button_post$id'>x</button>";
+					}else{
 
-				<!--if comment is clicked change view-->
-				<script>
-					function toggle<?php echo $id;?>(){
-						var target = $(event.target);
-						if (!target.is("a")){
+						$delete_button = "";
+					}
 
-							var element = document.getElementById("toggleComment<?php echo $id;?>");
-							if (element.style.display == "block")
-								element.style.display = "none";
-							else
-								element.style.display = "block";
+					//Get User Information 
+					$user_detail_query = mysqli_query($this->con, "SELECT first_name, last_name, profile_photo FROM user_information WHERE username = '$added_by'");
+					$user_row = mysqli_fetch_array($user_detail_query);
+					$first_name =	$user_row['first_name'];
+					$last_name 	= 	$user_row['last_name'];
+					$profile_photo =	$user_row['profile_photo'];
+					
+					?>
+
+
+
+					<!--if comment is clicked change view-->
+					<script>
+						function toggle<?php echo $id;?>(){
+							var target = $(event.target);
+							if (!target.is("a")){
+
+								var element = document.getElementById("toggleComment<?php echo $id;?>");
+								if (element.style.display == "block")
+									element.style.display = "none";
+								else
+									element.style.display = "block";
+							}
+							
 						}
+					</script>
+
+
+					<?php
+					//TimeFrame
+					$date_time_current = date("Y-m-d H:i:s");
+					$start_date_time = new DateTime($date_time_added);		//Time Posted
+					$end_date_time = new DateTime($date_time_current);			//Current Time
+					$interval = $start_date_time->diff($end_date_time);			//Interval between the 2 times
+
+					
+					//Year Old
+					if ($interval-> y >= 1) {
+						if ($interval-> y == 1) 
+							$time_msg = $interval->y. " year age";
+						else
+							$time_msg = $interval->y. " years ago"; 
+					}
+					
+					//month Old
+					elseif ($interval-> m >=1) {
+
+						if ($interval-> d == 0){
+							$days = "ago";
+						}elseif($interval-> d ==1){
+							$days = $interval-> d. " day ago";
+						}else{
+							$days = $interval->d. " days ago";	
+						}
+
+						if ($interval-> m == 1) {
+							$time_msg = $interval-> m . " month" . $days;
+						}else{
+							$time_msg = $interval-> m . " months" . $days;
+						}
+					}
+					
+					//Day Old
+					elseif ($interval-> d >=1) {
+						if ($interval-> d == 1)
+							$time_msg = $interval-> d. " day ago";
+						else
+							$time_msg = $interval-> d." days ago";
 						
 					}
-				</script>
-
-				
-
-
-				<?php
-				//TimeFrame
-				$date_time_current = date("Y-m-d H:i:s");
-				$start_date_time = new DateTime($date_time_added);		//Time Posted
-				$end_date_time = new DateTime($date_time_current);			//Current Time
-				$interval = $start_date_time->diff($end_date_time);			//Interval between the 2 times
-
-				
-				//Year Old
-				if ($interval-> y >= 1) {
-					if ($interval-> y == 1) 
-						$time_msg = $interval->y. " year age";
-					else
-						$time_msg = $interval->y. " years ago"; 
-				}
-				
-				//month Old
-				elseif ($interval-> m >=1) {
-
-					if ($interval-> d == 0){
-						$days = "ago";
-					}elseif($interval-> d ==1){
-						$days = $interval-> d. " day ago";
-					}else{
-						$days = $interval->d. " days ago";	
+					//Hour Old 
+					elseif ($interval-> h >=1) {
+						if ($interval-> h == 1) {
+							$time_msg = $interval-> h. " hour ago";
+						}else{
+							$time_msg = $interval-> h." hours ago";
+						}
 					}
 
-					if ($interval-> m == 1) {
-						$time_msg = $interval-> m . " month" . $days;
-					}else{
-						$time_msg = $interval-> m . " months" . $days;
+					//Minute Old
+					elseif ($interval-> i >= 1) {
+						if ($interval-> i == 1) {
+							$time_msg = $interval-> i. " minute ago";
+						}else{
+							$time_msg = $interval-> i." minutes ago";
+						}
 					}
-				}
-				
-				//Day Old
-				elseif ($interval-> d >=1) {
-					if ($interval-> d == 1)
-						$time_msg = $interval-> d. " day ago";
-					else
-						$time_msg = $interval-> d." days ago";
-					
-				}
-				//Hour Old 
-				elseif ($interval-> h >=1) {
-					if ($interval-> h == 1) {
-						$time_msg = $interval-> h. " hour ago";
-					}else{
-						$time_msg = $interval-> h." hours ago";
-					}
-				}
 
-				//Minute Old
-				elseif ($interval-> i >= 1) {
-					if ($interval-> i == 1) {
-						$time_msg = $interval-> i. " minute ago";
-					}else{
-						$time_msg = $interval-> i." minutes ago";
+					//Second Old
+					else {
+						if ($interval-> i<30){
+							$time_msg = "just now";
+						}
+						elseif ($interval-> s == 1) {
+							$time_msg = $interval-> s. " day ago";
+						}else{
+							$time_msg = $interval-> s." days ago";
+						}						
 					}
-				}
+					$str .="<div class='status_post' onClick='javascript:toggle$id()'>
+								<div class='post_pro_photo'>
+									<img src = '$profile_photo' height = '50'>
+								</div>
 
-				//Second Old
-				else {
-					if ($interval-> i<30){
-						$time_msg = "just now";
-					}
-					elseif ($interval-> s == 1) {
-						$time_msg = $interval-> s. " day ago";
-					}else{
-						$time_msg = $interval-> s." days ago";
-					}						
-				}
-				$str .="<div class='status_post' onClick='javascript:toggle$id()'>
-							<div class='post_pro_photo'>
-								<img src = '$profile_photo' height = '50'>
+								<div class = 'posted_by'>
+									<a href='$added_by'> $first_name $last_name </a> $added_to &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$time_msg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$delete_button
+								</div>
+
+								<div id='post_body'>
+									<br>
+								 	$body
+								 	<br>
+								</div>
+
+								<div class='post_comment' id = 'toggleComment$id' style = 'display: none;'>
+								<iframe src = 'comment_section.php?post_id=$id' id = 'commnet_iframe'></iframe>
+								</div>
+
 							</div>
-
-							<div class = 'posted_by'>
-								<a href='$added_by'> $first_name $last_name </a> $added_to &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$time_msg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$delete_button
-							</div>
-
-							<div id='post_body'>
-								<br>
-							 	$body
-							 	<br>
-							</div>
-
-							<div class='post_comment' id = 'toggleComment$id' style = 'display: none;'>
-							<iframe src = 'comment_section.php?post_id=$id' id = 'commnet_iframe'></iframe>
-							</div>
-
-						</div>
-						<hr>";		
-
+							<hr>";		
+					} 
 
 			?>
 
@@ -255,12 +257,13 @@ class Posts{
 
 
 
-
 			<?php
 
 			
-			}
+			}	//end While loop
 			
+
+			//Ajax Load Posts
 			if($count_post_loaded > $limit) 
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
 							<input type='hidden' class='no_morePosts' value='false'>";

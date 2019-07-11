@@ -24,6 +24,7 @@
 		<!--======================================================================================================-->
 	 	
 
+
 	 	<!--The status_update Column-->
 	 	<div class="post_column column">
 	 		<!--Status update Section-->

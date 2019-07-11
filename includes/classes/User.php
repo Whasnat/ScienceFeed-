@@ -47,8 +47,17 @@
 			
 		}
 
-		public function isFriend(){
-			
+		public function isFriend($username_friend){
+			$usernameF = ",".$username_friend.",";
+
+			if ((strstr($this->user['friends_list'], $usernameF)) || $username_friend == $this->user['username']){
+				return true;
+			}
+			else{
+				return false;
+			}
+
+
 		}
 
 	}
